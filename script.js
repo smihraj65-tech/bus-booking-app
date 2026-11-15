@@ -6,18 +6,14 @@
 // ============================================================
 // State & Configuration
 // ============================================================
-const DEFAULT_CRUD_KEY = 'c36d9c6adcd74dd89dfbc350eb593943';
-const STORAGE_KEY = 'crudcrud_bus_key';
+// Direct Backend Endpoint for Bus Booking Project
+const API_URL = 'https://crudcrud.com/api/c36d9c6adcd74dd89dfbc350eb593943/busbooking';
 
 let allBookings = [];
 let isEditing = false;
 let currentEditId = null;
 
 // DOM Elements
-const apiConfigForm = document.getElementById('apiConfigForm');
-const crudApiKeyInput = document.getElementById('crudApiKey');
-const crudDashboardLink = document.getElementById('crudDashboardLink');
-
 const bookingForm = document.getElementById('bookingForm');
 const bookingIdInput = document.getElementById('bookingId');
 const passengerNameInput = document.getElementById('passengerName');
@@ -55,24 +51,11 @@ const bsToast = new bootstrap.Toast(liveToast, { delay: 3500 });
 // ============================================================
 
 /**
- * Returns current CrudCrud unique key
- */
-function getCrudKey() {
-  const savedKey = localStorage.getItem(STORAGE_KEY);
-  return savedKey && savedKey.trim() !== '' ? savedKey.trim() : DEFAULT_CRUD_KEY;
-}
-
-/**
  * Returns endpoint URL for bus bookings
  */
 function getApiUrl() {
-  const key = getCrudKey();
-  return `https://crudcrud.com/api/${key}/busbooking`;
+  return API_URL;
 }
-
-/**
- * Shows interactive toast notification
- */
 function showToast(message, type = 'success') {
   liveToast.classList.remove('bg-success', 'bg-danger', 'bg-warning', 'bg-primary');
   
@@ -94,14 +77,12 @@ function showToast(message, type = 'success') {
   bsToast.show();
 }
 
-/**
- * Update CrudCrud Dashboard link
- */
-function updateDashboardLink() {
-  const key = getCrudKey();
-  crudApiKeyInput.value = key;
-  crudDashboardLink.href = `https://crudcrud.com/Dashboard/${key}`;
-}
+// ============================================================
+// Initialization
+// ============================================================
+document.addEventListener('DOMContentLoaded', () => {
+  fetchBookings();
+});
 
 // ============================================================
 // API Operations (CRUD)
@@ -422,22 +403,4 @@ refreshBtn.addEventListener('click', function() {
   showToast('Bookings refreshed from cloud.', 'info');
 });
 
-// Save CrudCrud API Key Form
-apiConfigForm.addEventListener('submit', function(e) {
-  e.preventDefault();
-  const inputKey = crudApiKeyInput.value.trim();
-  if (inputKey) {
-    localStorage.setItem(STORAGE_KEY, inputKey);
-    updateDashboardLink();
-    showToast('New CrudCrud API key saved!', 'success');
-    fetchBookings();
-  }
-});
 
-// ============================================================
-// Initialization
-// ============================================================
-document.addEventListener('DOMContentLoaded', () => {
-  updateDashboardLink();
-  fetchBookings();
-});
