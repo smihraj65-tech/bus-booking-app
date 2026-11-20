@@ -7,7 +7,7 @@
 // State & Configuration
 // ============================================================
 // Direct Backend Endpoint for Bus Booking Project
-const API_URL = 'https://crudcrud.com/api/c36d9c6adcd74dd89dfbc350eb593943/busbooking';
+const API_URL = 'https://crudcrud.com/api/0b73b4f5106446d8a3c335737dad0ced';
 
 let allBookings = [];
 let isEditing = false;
